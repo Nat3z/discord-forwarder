@@ -1,6 +1,6 @@
 FROM oven/bun:alpine
 COPY package.json .
-COPY bun.lockb .
+COPY bun.lock .
 COPY src/ .
 RUN bun install
 
