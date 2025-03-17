@@ -1,0 +1,31 @@
+{
+  "name": "discord-forwarder-bot",
+  "version": "1.0.0",
+  "description": "A Discord bot that forwards messages to ntfy.sh",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run index.ts",
+    "dev": "bun --watch index.ts",
+    "test-ntfy": "bun run src/examples/send-test-message.ts"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "ntfy",
+    "webhook"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7",
+    "node-fetch": "^3.3.2"
+  }
+}
