@@ -24,7 +24,7 @@ function parsePort(portStr: string | undefined): number {
 }
 
 // File path for storing configuration
-const ALLOWED_SERVERS_FILE = './allowed-servers.json';
+const ALLOWED_SERVERS_FILE = './cfg/allowed-servers.json';
 
 // Read settings from file or initialize with defaults
 let serverSettings: {
