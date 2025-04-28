@@ -1,4 +1,4 @@
-import { Message, TextChannel } from 'discord.js';
+import { Message, TextChannel, MessageAttachment, Client } from 'discord.js-selfbot-v13';
 import fetch from 'node-fetch';
 import { Config } from '../config.js';
 
@@ -10,16 +10,34 @@ export class NtfyService {
    * Forward a Discord message to ntfy.sh
    * @param message The Discord message to forward
    */
-  static async forwardMessage(message: Message): Promise<void> {
-    // Skip messages from bots to avoid potential loops
-    if (message.author.bot) return;
+  static async forwardMessage(message: Message, me: Client): Promise<void> {
+    // Skip messages from bots or self
+    if (message.author.bot || message.author.id === me.user?.id) {
+      console.log('skipping message from bot or self')
+      return
+    }
+    
+    // Skip messages from servers that are not allowed
+    if (message.guild) {
+      // Check if the server and channel are allowed
+      const serverId = message.guild.id;
+      const channelId = message.channel.id;
+      console.log('isAllowed', Config.isChannelAllowed(serverId, channelId)) 
+      if (!Config.isChannelAllowed(serverId, channelId)) {
+        return;
+      }
+    }
     
     try {
       const content = `${message.content}`;
       
       // Add attachments if any
       const attachments = Array.from(message.attachments.values())
-        .map(attachment => attachment.title + '.' + attachment.url.split('.').pop())
+        .map((attachment: MessageAttachment) => {
+          const fileName = attachment.name || 'attachment';
+          const fileExt = attachment.url.split('.').pop() || '';
+          return `${fileName}.${fileExt}`;
+        })
         .join('\n');
       
       const fullContent = attachments 
@@ -27,11 +45,16 @@ export class NtfyService {
         : content;
       
       // Get the user's avatar URL
-      const avatarUrl = message.author.displayAvatarURL({ extension: 'png', size: 512 });
+      const avatarUrl = message.author.displayAvatarURL({ format: 'png', size: 512 });
       
       // Get channel name safely
-      const channel = message.channel.isTextBased() && message.channel instanceof TextChannel ? message.channel as TextChannel : null;
-      let channelName = `${channel ? '#' + channel.name : 'DM'}`;
+      let channelName = 'DM';
+      if (message.channel.type === 'DM') {
+        channelName = message.author.username;
+      } else if (message.channel.type === 'GUILD_TEXT') {
+        const textChannel = message.channel as TextChannel;
+        channelName = `#${textChannel.name}`;
+      }
 
       let clickUrl = message.guild ? `https://canary.discord.com/app/` : 'https://canary.discord.com/channels/@me';
       // Send to ntfy.sh

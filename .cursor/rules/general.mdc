@@ -1,0 +1,26 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Rules
+
+To get brief context on each file, you can reference [files.mdc](mdc:.cursor/rules/files.mdc) (the journal), which provides brief descriptions on the overall purpose of the file,
+its layout, functions in the file, purposes, etc. in a bulleted-form.
+
+## Making Changes
+
+When you make a change to a file, you need to rewrite the context of the file in its appropriate section in [files.mdc](mdc:.cursor/rules/files.mdc).
+Expect the format to be like so:
+
+  ```md
+  ## <directory>/<file-name>.<ext>
+
+  - Purpose: <purpose-of-file>
+  - Context:
+    - Functions/Layout:
+      - <brief-excerpt-on-info-you-want-to-save>
+      - <name>(<params>)
+        <Purpose-and-what-it-returns>
+      ...
+  ```

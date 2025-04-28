@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discord Message Forwarder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Discord Message Forwarder</h1>
+      <p>Select the servers and channels you want to forward messages from</p>
+      <p class="subtext">By default, all channels in a selected server will be forwarded</p>
+      <p class="subtext">Double-click a server to deselect it</p>
+    </header>
+
+    <main>
+      <div id="loading">Loading servers...</div>
+      <div id="error" class="hidden"></div>
+      
+      <div id="servers-container" class="hidden">
+        <div class="toolbar">
+          <button id="save-btn" class="primary-btn">Save Changes</button>
+          <button id="select-all-btn">Select All Servers</button>
+          <button id="deselect-all-btn">Deselect All</button>
+        </div>
+        
+        <div class="content-container">
+          <div class="panel-container">
+            <div class="panel servers-panel">
+              <h2>Servers</h2>
+              <div id="servers-list" class="servers-grid"></div>
+              <div class="user-info-bar hidden">
+                <div class="user-avatar"></div>
+                <div class="user-details">
+                  <div class="user-name">Loading user...</div>
+                  <div class="user-status">Forwarding messages</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="panel channels-panel">
+              <h2>Channels</h2>
+              <div id="channels-container">
+                <div id="no-server-selected">Select a server to view its channels</div>
+                <div id="channels-list" class="channels-list hidden"></div>
+                
+                <div class="channel-toolbar hidden">
+                  <button id="select-all-channels-btn">Select All Channels</button>
+                  <button id="deselect-all-channels-btn">Deselect All Channels</button>
+                  <div class="channel-help-text">Deselecting channels limits which ones will be forwarded</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>Discord Message Forwarder v1.0</p>
+    </footer>
+  </div>
+
+  <div id="save-notification" class="hidden">Changes saved successfully!</div>
+
+  <script src="app.js"></script>
+</body>
+</html> 

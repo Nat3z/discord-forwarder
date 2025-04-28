@@ -9,10 +9,12 @@ discord-forwarder-bot/
 ├── src/
 │   ├── config.ts         # Configuration and environment variables
 │   ├── client.ts         # Discord client setup
+│   ├── webserver.ts      # Web UI for configuration
 │   └── services/
 │       └── ntfy.ts       # ntfy.sh forwarding service
+├── public/               # Web UI assets
 ├── index.ts              # Main entry point
-├── .env                  # Environment variables (not tracked by git)
+├── example.env           # Example environment variables
 ├── package.json          # Project dependencies
 └── README.md             # This file
 ```
@@ -26,22 +28,44 @@ discord-forwarder-bot/
    bun install
    ```
 
-3. Create a Discord bot on the [Discord Developer Portal](https://discord.com/developers/applications)
-   - Create a new application
-   - Go to the "Bot" tab and create a bot
-   - Enable "Message Content Intent" under Privileged Gateway Intents
-   - Copy the bot token
-4. Update the `.env` file with your Discord bot token:
+3. Get your Discord user account token by copy and pasting this code into inspect element on the discord website:
+
+   ```javascript
+   window.webpackChunkdiscord_app.push([
+   [Math.random()],
+   {},
+   req => {
+      if (!req.c) return;
+      for (const m of Object.keys(req.c)
+         .map(x => req.c[x].exports)
+         .filter(x => x)) {
+         if (m.default && m.default.getToken !== undefined) {
+         return copy(m.default.getToken());
+         }
+         if (m.getToken !== undefined) {
+         return copy(m.getToken());
+         }
+      }
+   },
+   ]);
+   window.webpackChunkdiscord_app.pop();
+   console.log('%cWorked!', 'font-size: 50px');
+   console.log(`%cYou now have your token in the clipboard!`, 'font-size: 16px');
+   ```
+
+4. Create a `.env` file based on the example:
 
    ```none
-   DISCORD_TOKEN=your_discord_bot_token_here
+   # Required Discord configuration
+   DISCORD_TOKEN=your_discord_token_here
+   
+   # ntfy.sh configuration
    NTFY_TOPIC=your_ntfy_topic_here
-   ```none
-
-5. Invite the bot to your server using the OAuth2 URL generator in the Discord Developer Portal
-
-   - Select "bot" scope
-   - Select permissions: "Read Messages/View Channels" and "Read Message History"
+   
+   # Web server configuration (optional)
+   # PORT=8080
+   # HOST=0.0.0.0
+   ```
 
 ## Usage
 
@@ -63,7 +87,24 @@ Test the ntfy.sh connection without starting the bot:
 bun test-ntfy
 ```
 
-The bot will forward all messages from any channel it can access to the ntfy.sh webhook.
+## Web UI Configuration
+
+The bot includes a web interface for selecting which servers and channels to forward messages from. By default, the web interface is available at:
+
+```
+http://127.0.0.1:3000
+```
+
+### Customizing the Web Server
+
+You can customize the web server's port and host through environment variables in your `.env` file:
+
+```
+PORT=8080        # Change the port (default: 3000)
+HOST=0.0.0.0     # Change the host (default: 127.0.0.1)
+```
+
+Setting the host to `0.0.0.0` will make the web interface accessible from other devices on your network.
 
 ## Subscribing to Notifications
 

@@ -1,0 +1,91 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# File Context
+
+## src/client.ts
+- Purpose: Sets up and configures the Discord client for message forwarding
+- Context:
+  - Functions/Layout:
+    - setupClient(): Initializes a discord.js-selfbot-v13 client with event handlers
+    - generateRichPresence(): Creates custom Discord rich presence for the user account
+
+## src/config.ts
+- Purpose: Manages application configuration and server/channel settings
+- Context:
+  - Functions/Layout:
+    - Config object: Contains application settings and methods
+    - isChannelAllowed(): Checks if a specific channel is allowed for message forwarding
+    - updateServerSettings(): Updates server and channel settings and saves to a file
+    - parsePort(): Validates and parses the PORT environment variable
+    - Environment variables: PORT, HOST, DISCORD_TOKEN, NTFY_TOPIC
+    - Configuration is stored in allowed-servers.json for persistence
+
+## src/services/ntfy.ts
+- Purpose: Handles forwarding Discord messages to ntfy.sh notifications
+- Context:
+  - Functions/Layout:
+    - NtfyService class: Service for handling message forwarding
+    - forwardMessage(): Processes Discord messages and sends them to ntfy.sh
+    - Performs filtering based on allowed servers and channels
+
+## src/webserver.ts
+- Purpose: Provides a web interface for managing the message forwarding settings
+- Context:
+  - Functions/Layout:
+    - setupWebServer(): Creates an Express server with API routes
+    - Configurable port via environment variables
+    - API endpoints:
+      - /api/user: Gets current user information
+      - /api/servers: Gets list of servers the user is in
+      - /api/servers/:serverId/channels: Gets channels for a specific server
+      - /api/allowed-servers: Gets allowed servers and channels
+      - /api/server-settings: Updates server and channel settings
+
+## public/index.html
+- Purpose: Main HTML page for the web interface
+- Context:
+  - Layout:
+    - Header with title and instructions
+    - Server selection panel
+    - Channel selection panel
+    - User information bar showing the current Discord account
+
+## public/styles.css
+- Purpose: Styles for the web interface
+- Context:
+  - Layout:
+    - Discord-inspired dark theme
+    - Panel layout for servers and channels
+    - Selectable items with visual feedback
+    - User info bar at the bottom of the server panel
+
+## public/app.js
+- Purpose: Client-side JavaScript for the web interface
+- Context:
+  - Functions/Layout:
+    - Fetches user, server and channel data from the API
+    - Renders the UI based on the fetched data
+    - Handles server and channel selection
+    - Manages user interactions (clicking, double-clicking, etc.)
+    - Saves configuration changes
+
+## index.ts
+- Purpose: Entry point for the application
+- Context:
+  - Functions/Layout:
+    - Sets up Discord client
+    - Handles login and error cases
+    - Initializes web server for the configuration UI
+
+## example.env
+- Purpose: Example environment configuration file
+- Context:
+  - Configuration options:
+    - DISCORD_TOKEN: Discord user account token
+    - NTFY_TOPIC: Topic for ntfy.sh notifications
+    - PORT: Custom port for the web interface (optional)
+    - HOST: Custom host for the web interface (optional)
+
