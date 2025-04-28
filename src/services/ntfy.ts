@@ -56,7 +56,15 @@ export class NtfyService {
         channelName = `#${textChannel.name}`;
       }
 
-      let clickUrl = message.guild ? `https://canary.discord.com/app/` : 'https://canary.discord.com/channels/@me';
+      // Generate the appropriate Discord URL for the message
+      let url = '';
+      if (message.guild) {
+        url = `https://canary.discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id}`;
+      } else {
+        url = `https://canary.discord.com/channels/@me/${message.channel.id}/${message.id}`;
+      }
+      
+      let clickUrl = url;
       // Send to ntfy.sh
       const headers = {
           'Title': message.author.username + ` (${channelName}, ${message.guild?.name ?? 'DM'})`,
@@ -78,4 +86,5 @@ export class NtfyService {
       console.error('Error forwarding message:', error);
     }
   }
+
 } 
