@@ -44,6 +44,8 @@ try {
       serverSettings.allowedChannels = {};
     }
   } else {
+    // if the directory doesn't exist, create it
+    fs.mkdirSync('./cfg', { recursive: true });
     fs.writeFileSync(ALLOWED_SERVERS_FILE, JSON.stringify(serverSettings, null, 2));
   }
 } catch (error) {

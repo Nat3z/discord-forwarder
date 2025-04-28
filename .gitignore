@@ -176,3 +176,4 @@ dist
 
 # Discord Specific Stuff
 allowed-servers.json
+cfg/
